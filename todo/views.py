@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import item
 from .forms import ItemForm
 # Create your views here.
@@ -26,4 +26,33 @@ def add_item(request):
     }
     
     return render(request, 'todo/add_item.html', context)
+
+
+def edit_item(request, item_id):
+    Item = get_object_or_404(item, id=item_id, )
+    if request.method == 'POST':
+        form  = ItemForm(request.POST, instance=Item)
+        if form.is_valid():
+            form.save()
+            return redirect('get_todo_list')
+    form = ItemForm(instance=Item)
+    context = {
+        'form': form
+    }
+    return render(request, 'todo/edit_item.html', context)
+
+
+def toggle_item(request, item_id):
+    Item = get_object_or_404(item, id=item_id)
+    Item.done = not Item.done
+    Item.save()
+    return redirect('get_todo_list')
+
+
+def delete_item(request, item_id):
+    Item = get_object_or_404(item, id=item_id)
+    Item.delete()
+    return redirect('get_todo_list')
+ 
+
 
