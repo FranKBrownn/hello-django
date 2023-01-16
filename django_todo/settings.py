@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-18azi)$wm#o_dzkh6bhh8#+_&l3kv5@+@q(c9@-zyp10d$66cu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['my-todo-app97.herokuapp.com/']
+ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
 
 
 # Application definition
@@ -89,8 +89,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 # }
 
 DATABASES = {
-   'default': dj_database_url.parse('postgres://DATABASE_URL')
+   'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
+
+
 
 
 
